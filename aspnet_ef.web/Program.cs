@@ -7,11 +7,13 @@ namespace aspnet_ef.web
   {
     public static void Main(string[] args)
     {
-      CreateWebHostBuilder(args).Build().Run();
-    }
+      var builder = WebHost.CreateDefaultBuilder(args).UseStartup<Startup>();
+      var runner = builder.Build();
 
-    private static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-      WebHost.CreateDefaultBuilder(args)
-        .UseStartup<Startup>();
+      runner.Run();
+
+    }
+    
   }
+  
 }

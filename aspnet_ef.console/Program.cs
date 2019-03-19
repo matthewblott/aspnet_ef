@@ -2,6 +2,10 @@
 using aspnet_ef.services;
 using Microsoft.Extensions.DependencyInjection;
 
+// https://www.entityframeworktutorial.net/entityframework6/transaction-in-entity-framework.aspx
+// https://stackoverflow.com/questions/36583439/inject-dbcontext-in-asp-net-core-concrete-type-or-interface
+// https://medium.com/agilix/entity-framework-core-one-transaction-per-server-roundtrip-de807bacd1d5
+
 namespace aspnet_ef.console
 {
   internal class Program

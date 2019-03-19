@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using aspnet_ef.data;
 using aspnet_ef.data.models;
@@ -17,6 +18,11 @@ namespace aspnet_ef.services
       _db = db;
     }
 
+    public IEnumerable<Product> GetProducts()
+    {
+      return _db.Products;
+    }
+    
     public Product GetProduct(int id)
     {
       return _db.Products.Find(id);

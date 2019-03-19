@@ -24,22 +24,11 @@ namespace aspnet_ef.data
   
   public class Context : DbContext, IContext
   {
-    private readonly string _connectionString;
     public DbSet<Product> Products { get; private set; }
     public DbSet<Price> Prices { get; private set; }
     public DbContext Instance => this;
 
     private IDbContextTransaction _transaction;
-    
-    public Context(string connectionString)
-    {
-      _connectionString = connectionString;
-      _transaction = Instance.Database.BeginTransaction();
-
-      // if logging ...
-      //this.ConfigureLogging(Console.WriteLine, LoggingCategories.Sql);
-      
-    }
     
     public void Commit()
     {
@@ -59,20 +48,14 @@ namespace aspnet_ef.data
       }
       
     }
-    
-//    public Context(DbContextOptions options): base(options)
-//    {
-//    }
-    
-    protected override void OnConfiguring(DbContextOptionsBuilder builder)
-    {
-//      var path = Directory.GetCurrentDirectory();
-//      var info = Directory.GetParent(path);
-//      var connectionString = Path.Combine(info.FullName, "db", "aspnet_ef.sqlite");
 
-      builder.UseSqlite("Data Source=" + _connectionString);
+    public Context(DbContextOptions options) : base(options)
+    {
+      _transaction = Instance.Database.BeginTransaction();
+
+      // if logging ...
+      // this.ConfigureLogging(Console.WriteLine, LoggingCategories.Sql);
       
-//      base.OnConfiguring(builder);
     }
 
     ~Context()

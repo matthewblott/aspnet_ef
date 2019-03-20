@@ -1,11 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using aspnet_ef.data;
 using aspnet_ef.data.models;
 using Microsoft.EntityFrameworkCore;
-
-// https://stackoverflow.com/questions/36583439/inject-dbcontext-in-asp-net-core-concrete-type-or-interface
-// https://medium.com/agilix/entity-framework-core-one-transaction-per-server-roundtrip-de807bacd1d5
+using SQLitePCL;
 
 namespace aspnet_ef.services
 {
@@ -26,6 +25,37 @@ namespace aspnet_ef.services
     public Product GetProduct(int id)
     {
       return _db.Products.Find(id);
+    }
+
+    public void Add(Product product)
+    {
+      _db.Products.Add(product);
+      _db.Instance.SaveChanges();
+      
+      _db.Commit();
+      
+    }
+
+    public void Update(Product product)
+    {
+      var existingProduct = _db.Products.Find(product.Id);
+
+      existingProduct.Name = product.Name;
+
+      _db.Instance.SaveChanges();
+
+      _db.Commit();
+      
+    }
+
+    public void Delete(int id)
+    {
+      var product = _db.Products.Find(id);
+
+      _db.Products.Remove(product);
+      _db.Instance.SaveChanges();
+      _db.Commit();
+      
     }
 
     public Product GetProductWithPrices(int id)

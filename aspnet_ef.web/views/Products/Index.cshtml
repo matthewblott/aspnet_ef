@@ -1,12 +1,15 @@
 @model IEnumerable<Product>
 
-<table>
+<table class="table is-striped is-hoverable is-fullwidth">
   <tr>
     <th>
       Id      
     </th>
     <th>
       Name
+    </th>
+    <th>
+      <a asp-action="New">New</a>
     </th>
   </tr>
 
@@ -18,6 +21,9 @@
       </td>
       <td>
         @item.Name
+      </td>
+      <td>
+        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
       </td>
     </tr>  
   

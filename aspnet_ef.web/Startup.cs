@@ -27,16 +27,18 @@ namespace aspnet_ef.web
 
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddScoped<IProductService, ProductService>();
-
       var connStr = Configuration.GetConnectionString("default");
       var path = Directory.GetCurrentDirectory();
       var info = Directory.GetParent(path);
       var fullPath = Path.Combine(info.FullName, "db");
       var connectionString = string.Format(connStr, fullPath);
 
-      services.AddDbContextPool<IContext, Context>(x => x.UseSqlite(connectionString));
+      services.AddRouting(x => x.LowercaseUrls = true);
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+      services.AddScoped<IContext, Context>();
+      services.AddDbContextPool<Context>(x => x.UseSqlite(connectionString));
+      services.AddScoped<IProductService, ProductService>();
       
     }
 

@@ -8,7 +8,13 @@ namespace aspnet_ef.services
     IEnumerable<Product> GetProducts();
     Product GetProduct(int id);
     Product GetProductWithPrices(int id);
-    
+
+    void Add(Product product);
+
+    void Update(Product product);
+
+    void Delete(int id);
+
   }
   
 }

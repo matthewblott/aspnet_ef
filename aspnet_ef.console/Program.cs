@@ -20,6 +20,13 @@ namespace aspnet_ef.console
 
       Console.WriteLine(product?.Name);
 
+      product.Name = product.Name + "x";
+      
+      service.Update(product);
+
+      
+      
+      
       var prices = product?.Prices;
 
       if (prices == null)

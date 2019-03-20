@@ -1,0 +1,12 @@
+@model Product
+
+<partial name="_Form" model="Model" />
+
+<div class="field is-grouped">
+  <div class="control">
+    <button class="button is-success" form="_Form" asp-action="Update">Save</button>
+  </div>
+  <div class="control">
+    <button class="button is-danger" form="_Form" asp-action="Delete">Delete</button>
+  </div>
+</div>

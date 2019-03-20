@@ -8,7 +8,5 @@ namespace aspnet_ef.web.controllers
     {
       return View();
     }
-  
   }
-  
 }

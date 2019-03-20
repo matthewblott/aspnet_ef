@@ -1,9 +1,6 @@
 using System;
-using System.IO;
-using System.Transactions;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using aspnet_ef.data.models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace aspnet_ef.data
@@ -19,17 +16,24 @@ namespace aspnet_ef.data
     DbSet<Price> Prices { get; }
 
     void Commit();
-
   }
-  
+
   public class Context : DbContext, IContext
   {
+    private IDbContextTransaction _transaction;
+
+    public Context(DbContextOptions options) : base(options)
+    {
+      _transaction = Instance.Database.BeginTransaction();
+
+      // if logging ...
+      // this.ConfigureLogging(Console.WriteLine, LoggingCategories.Sql);
+    }
+
     public DbSet<Product> Products { get; private set; }
     public DbSet<Price> Prices { get; private set; }
     public DbContext Instance => this;
 
-    private IDbContextTransaction _transaction;
-    
     public void Commit()
     {
       try
@@ -44,30 +48,16 @@ namespace aspnet_ef.data
       {
         _transaction.Dispose();
         _transaction = Instance.Database.BeginTransaction();
-        
       }
-      
-    }
-
-    public Context(DbContextOptions options) : base(options)
-    {
-      _transaction = Instance.Database.BeginTransaction();
-
-      // if logging ...
-      // this.ConfigureLogging(Console.WriteLine, LoggingCategories.Sql);
-      
     }
 
     ~Context()
     {
-      if (_transaction == null)
-      {
-        return;
-      }
-      
+      if (_transaction == null) return;
+
       _transaction.Dispose();
       _transaction = null;
-
+      
     }
     
   }

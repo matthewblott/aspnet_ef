@@ -14,7 +14,5 @@ namespace aspnet_ef.services
     void Update(Product product);
 
     void Delete(int id);
-
   }
-  
 }

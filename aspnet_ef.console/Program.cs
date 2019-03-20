@@ -1,5 +1,6 @@
 ﻿using System;
 using aspnet_ef.services;
+using aspnet_ef.web;
 using Microsoft.Extensions.DependencyInjection;
 
 // https://www.entityframeworktutorial.net/entityframework6/transaction-in-entity-framework.aspx
@@ -12,32 +13,24 @@ namespace aspnet_ef.console
   {
     private static void Main(string[] args)
     {
-      var services = Startup.ConfigureServices();
+      var services = new ServiceCollection();
+      var startup = new Startup();
+
+      startup.ConfigureServices(services);
+
       var serviceProvider = services.BuildServiceProvider();
       var service = serviceProvider.GetService<IProductService>();
-
       var product = service.GetProductWithPrices(1);
 
       Console.WriteLine(product?.Name);
 
-      product.Name = product.Name + "x";
-      
-      service.Update(product);
-
-      
-      
-      
       var prices = product?.Prices;
 
       if (prices == null)
-      {
         return;
-      }
 
       foreach (var price in prices)
-      {
         Console.WriteLine(price.Amount);
-      }
       
     }
     

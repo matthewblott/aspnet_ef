@@ -1,17 +1,15 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using aspnet_ef.data;
 using aspnet_ef.data.models;
 using Microsoft.EntityFrameworkCore;
-using SQLitePCL;
 
 namespace aspnet_ef.services
 {
   public class ProductService : IProductService
   {
     private readonly IContext _db;
-    
+
     public ProductService(IContext db)
     {
       _db = db;
@@ -21,7 +19,7 @@ namespace aspnet_ef.services
     {
       return _db.Products;
     }
-    
+
     public Product GetProduct(int id)
     {
       return _db.Products.Find(id);
@@ -31,9 +29,8 @@ namespace aspnet_ef.services
     {
       _db.Products.Add(product);
       _db.Instance.SaveChanges();
-      
+
       _db.Commit();
-      
     }
 
     public void Update(Product product)
@@ -45,7 +42,6 @@ namespace aspnet_ef.services
       _db.Instance.SaveChanges();
 
       _db.Commit();
-      
     }
 
     public void Delete(int id)
@@ -55,20 +51,11 @@ namespace aspnet_ef.services
       _db.Products.Remove(product);
       _db.Instance.SaveChanges();
       _db.Commit();
-      
     }
 
     public Product GetProductWithPrices(int id)
     {
-      // _db.Products.Include(x => x.Prices).FirstOrDefault(x => x.Id == 1);
       return _db.Products.Where(x => x.Id == 1).Include(x => x.Prices).FirstOrDefault();
     }
-
-    private void Commit()
-    {
-      _db.Commit();
-    }
-    
   }
-  
 }

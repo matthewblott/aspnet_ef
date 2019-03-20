@@ -12,18 +12,18 @@ namespace aspnet_ef.web
 {
   public class Startup
   {
-    public IConfiguration Configuration { get; }
-    
-    public Startup(IHostingEnvironment env)
+    public Startup()
     {
       var builder = new ConfigurationBuilder()
-        .SetBasePath(env.ContentRootPath)
-        .AddJsonFile("appsettings.json")
-        .AddEnvironmentVariables();
+        .SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettings.json");
+
+      builder.AddUserSecrets<Startup>();
 
       Configuration = builder.Build();
-      
     }
+
+    public IConfiguration Configuration { get; }
 
     public void ConfigureServices(IServiceCollection services)
     {
@@ -39,7 +39,6 @@ namespace aspnet_ef.web
       services.AddScoped<IContext, Context>();
       services.AddDbContextPool<Context>(x => x.UseSqlite(connectionString));
       services.AddScoped<IProductService, ProductService>();
-      
     }
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -47,7 +46,7 @@ namespace aspnet_ef.web
       app.UseDeveloperExceptionPage();
       app.UseStaticFiles();
       app.UseMvcWithDefaultRoute();
-
+      
     }
     
   }

@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="~/css/site.css">
 </head>
 <body>
-    
+
 <div class="container is-fluid">
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div id="navbarBasicExample" class="navbar-menu">
@@ -24,14 +24,14 @@
     </div>
   </nav>
 </div>
-    
+
 <div class="container is-fluid">
   @RenderBody()
 </div>
-    
+
 <script src="~/js/site.js" asp-append-version="true"></script>
-  
-@RenderSection("Scripts", required: false)
+
+@RenderSection("Scripts", false)
 
 </body>
 </html>

@@ -1,5 +1,8 @@
+using System.Collections.Generic;
 using aspnet_ef.data.models;
 using aspnet_ef.services;
+using aspnet_ef.web.models;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace aspnet_ef.web.controllers
@@ -7,22 +10,25 @@ namespace aspnet_ef.web.controllers
   public class ProductsController : Controller
   {
     private readonly IProductService _productService;
+    private readonly IMapper _mapper;
 
-    public ProductsController(IProductService productService)
+    public ProductsController(IProductService productService, IMapper mapper)
     {
       _productService = productService;
+      _mapper = mapper;
     }
 
     public IActionResult Index()
     {
       var products = _productService.GetProducts();
-
-      return View(products);
+      var productViewModels = _mapper.Map<IEnumerable<ProductViewModel>>(products);
+      
+      return View(productViewModels);
     }
 
     public IActionResult New()
     {
-      var product = new Product();
+      var product = new ProductViewModel();
 
       return View(product);
     }
@@ -30,13 +36,17 @@ namespace aspnet_ef.web.controllers
     public IActionResult Edit(int id)
     {
       var product = _productService.GetProduct(id);
-
-      return View(product);
+      var productViewModel = _mapper.Map<ProductViewModel>(product);
+      
+      return View(productViewModel);
+      
     }
 
     [HttpPost]
-    public IActionResult Create(Product product)
+    public IActionResult Create(ProductViewModel productViewModel)
     {
+      var product = _mapper.Map<Product>(productViewModel);
+      
       _productService.Add(product);
 
       return RedirectToAction(nameof(Index));
@@ -44,8 +54,10 @@ namespace aspnet_ef.web.controllers
 
 
     [HttpPost]
-    public IActionResult Update(Product product)
+    public IActionResult Update(ProductViewModel productViewModel)
     {
+      var product = _mapper.Map<Product>(productViewModel);
+
       _productService.Update(product);
 
       return RedirectToAction(nameof(Index));

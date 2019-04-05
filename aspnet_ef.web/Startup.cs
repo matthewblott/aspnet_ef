@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using AutoMapper;
+using System.IO;
 using aspnet_ef.data;
 using aspnet_ef.services;
 using Microsoft.AspNetCore.Builder;
@@ -19,7 +20,6 @@ namespace aspnet_ef.web
         .AddJsonFile("appsettings.json");
 
       builder.AddUserSecrets<Startup>();
-
       Configuration = builder.Build();
     }
 
@@ -33,6 +33,7 @@ namespace aspnet_ef.web
       var fullPath = Path.Combine(info.FullName, "db");
       var connectionString = string.Format(connStr, fullPath);
 
+      services.AddAutoMapper();
       services.AddRouting(x => x.LowercaseUrls = true);
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 

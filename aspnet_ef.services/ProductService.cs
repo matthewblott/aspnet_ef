@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using aspnet_ef.data;
@@ -44,7 +45,7 @@ namespace aspnet_ef.services
       _db.Commit();
     }
 
-    public void Delete(int id)
+    public void Delete(object id)
     {
       var product = _db.Products.Find(id);
 

@@ -40,6 +40,7 @@ namespace aspnet_ef.web
       services.AddScoped<IContext, Context>();
       services.AddDbContextPool<Context>(x => x.UseSqlite(connectionString));
       services.AddScoped<IProductService, ProductService>();
+      
     }
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)

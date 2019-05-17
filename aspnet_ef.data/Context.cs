@@ -40,7 +40,7 @@ namespace aspnet_ef.data
       {
         _transaction.Commit();
       }
-      catch (Exception e)
+      catch (Exception)
       {
         _transaction.Rollback();
       }

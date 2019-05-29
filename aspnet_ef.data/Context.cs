@@ -27,7 +27,7 @@ namespace aspnet_ef.data
       _transaction = Instance.Database.BeginTransaction();
 
       // if logging ...
-      // this.ConfigureLogging(Console.WriteLine, LoggingCategories.Sql);
+      this.ConfigureLogging(Console.WriteLine, LoggingCategories.Sql);
     }
 
     public DbSet<Product> Products { get; private set; }

@@ -2,13 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <AspNetCoreHostingModel>inprocess</AspNetCoreHostingModel>
-    <UserSecretsId>5f215564-cdac-48cb-9f92-9ebd95dcf205</UserSecretsId>
+<!--    <AspNetCoreHostingModel>inprocess</AspNetCoreHostingModel>-->
+    <UserSecretsId>17fd28a9-e54f-447c-9d9d-0cfacf1437a4</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+
     <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="4.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-preview5-19227-01" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.0.0-preview5-19227-01" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.0-preview5.19227.9" />

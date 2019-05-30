@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <UserSecretsId>c4e4d887-d181-4658-9169-0f20b7fcfd27</UserSecretsId>
+    <UserSecretsId>17fd28a9-e54f-447c-9d9d-0cfacf1437a4</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.0.0-preview5.19227.9" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.0.0-preview5.19227.9" />

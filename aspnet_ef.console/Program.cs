@@ -2,6 +2,7 @@
 using aspnet_ef.services;
 using aspnet_ef.web;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 // https://www.entityframeworktutorial.net/entityframework6/transaction-in-entity-framework.aspx
 // https://stackoverflow.com/questions/36583439/inject-dbcontext-in-asp-net-core-concrete-type-or-interface
@@ -13,9 +14,12 @@ namespace aspnet_ef.console
   {
     private static void Main(string[] args)
     {
-      var services = new ServiceCollection();
-      var startup = new Startup();
+      var loggerFactory = new LoggerFactory();
 
+      var services = new ServiceCollection();
+      var startup = new Startup(loggerFactory);
+
+      
       startup.ConfigureServices(services);
 
       var serviceProvider = services.BuildServiceProvider();

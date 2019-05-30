@@ -1,7 +1,10 @@
 using System;
 using aspnet_ef.data.models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 
 namespace aspnet_ef.data
 {
@@ -24,12 +27,21 @@ namespace aspnet_ef.data
 
     public Context(DbContextOptions options) : base(options)
     {
+//      var loggerFactory = this.GetService<ILoggerFactory>();
+//
+//      if (loggerFactory != null)
+//      {
+//        var logger = loggerFactory.CreateLogger(DbLoggerCategory.Database.Connection.Name);
+//        
+//        logger.Log(LogLevel.Information, "Hello from Db!");
+//       
+//      }
+      
       _transaction = Instance.Database.BeginTransaction();
-
       // if logging ...
-      this.ConfigureLogging(Console.WriteLine, LoggingCategories.Sql);
+//      this.ConfigureLogging(Console.WriteLine, LoggingCategories.Sql);
     }
-
+    
     public DbSet<Product> Products { get; private set; }
     public DbSet<Price> Prices { get; private set; }
     public DbContext Instance => this;

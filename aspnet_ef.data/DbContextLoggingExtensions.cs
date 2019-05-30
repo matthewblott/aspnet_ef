@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace aspnet_ef.data
@@ -15,19 +17,35 @@ namespace aspnet_ef.data
 
   public static class DbContextLoggingExtensions
   {
+    private static ILoggerFactory GetLoggerFactory(DbContext db)
+    {
+      var loggerFactory = db.GetService<ILoggerFactory>();
+
+//      return loggerFactory;
+
+      var serviceProvider = db.GetInfrastructure();
+      var loggerFactory2 = serviceProvider.GetRequiredService<ILoggerFactory>();
+
+      return loggerFactory2;
+
+//      var serviceProvider = db.GetInfrastructure();
+//      return (LoggerFactory) serviceProvider.GetService(typeof(ILoggerFactory));
+
+    }
+    
     public static void ConfigureLogging(this DbContext db, Action<string> logger, Func<string, LogLevel, bool> filter)
     {
-      var serviceProvider = db.GetInfrastructure();
-      var loggerFactory = (ILoggerFactory) serviceProvider.GetService(typeof(ILoggerFactory));
+      var loggerFactory = GetLoggerFactory(db);
 
+      
       LogProvider.CreateOrModifyLoggerForDbContext(db.GetType(), loggerFactory, logger, filter);
+      
     }
 
     public static void ConfigureLogging(this DbContext db, Action<string> logger,
       LoggingCategories categories = LoggingCategories.All)
     {
-      var serviceProvider = db.GetInfrastructure();
-      var loggerFactory = (LoggerFactory) serviceProvider.GetService(typeof(ILoggerFactory));
+      var loggerFactory = GetLoggerFactory(db);
 
       if (categories == LoggingCategories.Sql)
       {

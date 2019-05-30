@@ -3,7 +3,6 @@ using System.IO;
 using aspnet_ef.data;
 using aspnet_ef.services;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -35,7 +34,8 @@ namespace aspnet_ef.web
 
       services.AddAutoMapper();
       services.AddRouting(x => x.LowercaseUrls = true);
-      services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+      services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+        .AddRazorRuntimeCompilation();
 
       services.AddScoped<IContext, Context>();
       services.AddDbContextPool<Context>(x => x.UseSqlite(connectionString));
@@ -43,11 +43,15 @@ namespace aspnet_ef.web
       
     }
 
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+    public void Configure(IApplicationBuilder app)
     {
       app.UseDeveloperExceptionPage();
       app.UseStaticFiles();
-      app.UseMvcWithDefaultRoute();
+      app.UseRouting();
+      app.UseEndpoints(endpoints =>
+      {
+        endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+      });      
       
     }
     

@@ -25,21 +25,22 @@ namespace aspnet_ef.data
   {
     private IDbContextTransaction _transaction;
 
+//    private ILoggerFactory _loggerFactory;
+    
     public Context(DbContextOptions options) : base(options)
     {
-//      var loggerFactory = this.GetService<ILoggerFactory>();
+//      _loggerFactory = this.GetService<ILoggerFactory>();
 //
-//      if (loggerFactory != null)
+//      if (_loggerFactory != null)
 //      {
-//        var logger = loggerFactory.CreateLogger(DbLoggerCategory.Database.Connection.Name);
-//        
-//        logger.Log(LogLevel.Information, "Hello from Db!");
-//       
+//        var logger = _loggerFactory.CreateLogger(DbLoggerCategory.Name);
+//
+//        logger.LogInformation("Hello from Db!");
+//
 //      }
-      
+
       _transaction = Instance.Database.BeginTransaction();
-      // if logging ...
-//      this.ConfigureLogging(Console.WriteLine, LoggingCategories.Sql);
+      
     }
     
     public DbSet<Product> Products { get; private set; }

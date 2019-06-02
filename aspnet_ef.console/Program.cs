@@ -17,8 +17,7 @@ namespace aspnet_ef.console
       var loggerFactory = new LoggerFactory();
 
       var services = new ServiceCollection();
-      var startup = new Startup(loggerFactory);
-
+      var startup = new Startup();
       
       startup.ConfigureServices(services);
 

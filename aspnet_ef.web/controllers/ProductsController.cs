@@ -4,22 +4,28 @@ using aspnet_ef.services;
 using aspnet_ef.web.models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace aspnet_ef.web.controllers
 {
+  [ServiceFilter(typeof(LogFilter))]
   public class ProductsController : Controller
   {
     private readonly IProductService _productService;
     private readonly IMapper _mapper;
-
-    public ProductsController(IProductService productService, IMapper mapper)
+    private readonly ILogger<ProductsController> _logger;
+    public ProductsController(IProductService productService, IMapper mapper, ILogger<ProductsController> logger)
     {
       _productService = productService;
       _mapper = mapper;
+      _logger = logger;
+      _logger.LogInformation(message: "XXXXXXXXXXXXXXXXXXX ProductsController constructor called");
     }
 
     public IActionResult Index()
     {
+      _logger.LogInformation(message: "ProductsController Index called");
+      
       var products = _productService.GetProducts();
       var productViewModels = _mapper.Map<IEnumerable<ProductViewModel>>(products);
       

@@ -1,29 +1,23 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using System.IO;
 using aspnet_ef.data;
 using aspnet_ef.services;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Console;
 
 namespace aspnet_ef.web
 {
   public class Startup
   {
-    private readonly ILoggerFactory _loggerFactory;
-    
-    public Startup(ILoggerFactory loggerFactory)
+    public Startup()
     {
       var builder = new ConfigurationBuilder()
         .SetBasePath(Directory.GetCurrentDirectory())
         .AddJsonFile("appsettings.json");
-
-      _loggerFactory = loggerFactory;
       
       builder.AddUserSecrets<Startup>();
       Configuration = builder.Build();
@@ -40,21 +34,17 @@ namespace aspnet_ef.web
       services.AddMvc()
         .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
         .AddRazorRuntimeCompilation();
-
+      
+      services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+      services.AddScoped<LogFilter>();
       services.AddScoped<IContext, Context>();
 
       var optionsBuilder = new DbContextOptionsBuilder();
 
       void OptionsRunner(DbContextOptionsBuilder builder)
       {
-//        var logger = _loggerFactory.CreateLogger(DbLoggerCategory.Database.Connection.Name);
-//
-//        logger.Log(LogLevel.Information, "Hello World!");
-        
+        builder.EnableSensitiveDataLogging(); // Parameter values will be displayed in logs
         builder.UseSqlServer(connStr);
-        builder.EnableSensitiveDataLogging();
-        builder.UseLoggerFactory(_loggerFactory);
-        
       }
       
       OptionsRunner(optionsBuilder);
@@ -72,7 +62,7 @@ namespace aspnet_ef.web
       app.UseEndpoints(endpoints =>
       {
         endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
-      });      
+      });
       
     }
     

@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using System.IO;
 using aspnet_ef.data;
 using aspnet_ef.services;
@@ -15,12 +16,21 @@ namespace aspnet_ef.web
   {
     public Startup()
     {
-      var builder = new ConfigurationBuilder()
-        .SetBasePath(Directory.GetCurrentDirectory())
-        .AddJsonFile("appsettings.json");
+      try
+      {
+        var builder = new ConfigurationBuilder()
+          .SetBasePath(Directory.GetCurrentDirectory())
+          .AddJsonFile("appsettings.json");
       
-      builder.AddUserSecrets<Startup>();
-      Configuration = builder.Build();
+        builder.AddUserSecrets<Startup>();
+        Configuration = builder.Build();
+
+      }
+      catch (Exception e)
+      {
+        Console.WriteLine(e.Message);
+      }
+      
     }
 
     public IConfiguration Configuration { get; }

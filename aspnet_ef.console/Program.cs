@@ -14,8 +14,6 @@ namespace aspnet_ef.console
   {
     private static void Main(string[] args)
     {
-      var loggerFactory = new LoggerFactory();
-
       var services = new ServiceCollection();
       var startup = new Startup();
       

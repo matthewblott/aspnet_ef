@@ -1,8 +1,11 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using System.IO;
 using aspnet_ef.data;
 using aspnet_ef.services;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,12 +15,15 @@ namespace aspnet_ef.web
 {
   public class Startup
   {
-    public Startup()
+    public IWebHostEnvironment WebHostEnvironment { get; }
+    public Startup(IWebHostEnvironment environment)
     {
       var builder = new ConfigurationBuilder()
         .SetBasePath(Directory.GetCurrentDirectory())
         .AddJsonFile("appsettings.json");
 
+      WebHostEnvironment = environment;
+      
       builder.AddUserSecrets<Startup>();
       Configuration = builder.Build();
     }
@@ -27,11 +33,13 @@ namespace aspnet_ef.web
     public void ConfigureServices(IServiceCollection services)
     {
       var connStr = Configuration.GetConnectionString("default");
-      var path = Directory.GetCurrentDirectory();
+      
+      var path = WebHostEnvironment.ContentRootPath;
       var info = Directory.GetParent(path);
+      
       var fullPath = Path.Combine(info.FullName, "db");
       var connectionString = string.Format(connStr, fullPath);
-
+      
       services.AddAutoMapper();
       services.AddRouting(x => x.LowercaseUrls = true);
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
@@ -54,6 +62,9 @@ namespace aspnet_ef.web
       });      
       
     }
+    
+    public static void Main(string[] args) =>
+      WebHost.CreateDefaultBuilder(args).UseStartup<Startup>().Build().Run();
     
   }
   

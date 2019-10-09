@@ -13,8 +13,9 @@ namespace aspnet_ef.console
   {
     private static void Main(string[] args)
     {
+      var host = new HostEnvironment();
       var services = new ServiceCollection();
-      var startup = new Startup();
+      var startup = new Startup(host);
 
       startup.ConfigureServices(services);
 

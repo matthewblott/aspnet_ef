@@ -4,7 +4,9 @@
   },
   "Logging": {
     "LogLevel": {
-      "Default": "Information"
+      "Default": "Error",
+      "Microsoft": "Error",
+      "Microsoft.EntityFrameworkCore.Database.Command": "Error"
     }
   }
 }

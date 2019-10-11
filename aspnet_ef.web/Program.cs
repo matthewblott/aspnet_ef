@@ -1,9 +1,12 @@
 ﻿using System;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NLog;
+using NLog.Extensions.Logging;
 using NLog.Web;
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace aspnet_ef.web
 {
@@ -15,8 +18,6 @@ namespace aspnet_ef.web
 
       try
       {
-        logger.Debug("init main");
-        
         var builder = WebHost
           .CreateDefaultBuilder(args)
           .UseStartup<Startup>()
@@ -42,14 +43,21 @@ namespace aspnet_ef.web
     private static void ConfigLogging(ILoggingBuilder builder)
     {
       builder.ClearProviders();
-      // builder.AddConsole();
-      // builder.SetMinimumLevel(LogLevel.Information); 
-      // builder.AddNLog();
 
-      //      builder.AddFilter(DbLoggerCategory.Name, LogLevel.Debug);
-      //      builder.AddFilter(DbLoggerCategory.Database.Connection.Name, LogLevel.Debug);
-      //      builder.AddFilter(DbLoggerCategory.Query.Name, LogLevel.Debug);
-      //      builder.AddFilter(DbLoggerCategory.Update.Name, LogLevel.Debug);
+      // Default loggers 
+//      builder.AddConsole();
+//      builder.AddDebug();
+//      builder.AddEventSourceLogger();
+//      builder.AddEventLog(); // Windows only
+      
+      //builder.SetMinimumLevel(LogLevel.Trace); 
+      //builder.AddNLog(); // required ?
+
+//      builder.AddFilter(DbLoggerCategory.Name, LogLevel.Debug);
+//      builder.AddFilter(DbLoggerCategory.Database.Connection.Name, LogLevel.Information);
+//      builder.AddFilter(DbLoggerCategory.Database.Connection.Name, LogLevel.Debug);
+//      builder.AddFilter(DbLoggerCategory.Query.Name, LogLevel.Debug);
+//      builder.AddFilter(DbLoggerCategory.Update.Name, LogLevel.Debug);
 
     }
     

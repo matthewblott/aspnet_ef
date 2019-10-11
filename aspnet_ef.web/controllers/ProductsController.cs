@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace aspnet_ef.web.controllers
 {
-  [ServiceFilter(typeof(LogFilter))]
+  //[ServiceFilter(typeof(LogFilter))]
   public class ProductsController : Controller
   {
     private readonly IProductService _productService;
@@ -22,14 +22,18 @@ namespace aspnet_ef.web.controllers
       _logger.LogInformation(message: "XXXXXXXXXXXXXXXXXXX ProductsController constructor called");
     }
 
-    public IActionResult Index()
+    public IActionResult Index(string searchTerm = "")
     {
       _logger.LogInformation(message: "ProductsController Index called");
+
+      var products = string.IsNullOrWhiteSpace(searchTerm)
+        ? _productService.GetProducts()
+        : _productService.GetProductsFromSearch(searchTerm);
       
-      var products = _productService.GetProducts();
       var productViewModels = _mapper.Map<IEnumerable<ProductViewModel>>(products);
       
       return View(productViewModels);
+
     }
 
     public IActionResult New()
@@ -48,6 +52,11 @@ namespace aspnet_ef.web.controllers
       
     }
 
+    public IActionResult Search()
+    {
+      return View();
+    }
+    
     [HttpPost]
     public IActionResult Create(ProductViewModel productViewModel)
     {
@@ -57,8 +66,7 @@ namespace aspnet_ef.web.controllers
 
       return RedirectToAction(nameof(Index));
     }
-
-
+    
     [HttpPost]
     public IActionResult Update(ProductViewModel productViewModel)
     {

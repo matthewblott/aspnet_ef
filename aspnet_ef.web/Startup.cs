@@ -40,6 +40,7 @@ namespace aspnet_ef.web
       var connStr = Configuration.GetConnectionString("default");
 
       services.AddAutoMapper();
+      
       services.AddRouting(x => x.LowercaseUrls = true);
       services.AddMvc()
         .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)

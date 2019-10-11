@@ -4,6 +4,7 @@ using System.Linq;
 using aspnet_ef.data;
 using aspnet_ef.data.models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace aspnet_ef.services
 {
@@ -21,6 +22,37 @@ namespace aspnet_ef.services
       return _db.Products;
     }
 
+    public IEnumerable<Product> GetProductsFromSearch(string searchTerm)
+    {
+      var isIdSearch = int.TryParse(searchTerm, out var id);
+
+      var q =
+        from x in _db.Products
+        select x;
+
+      q =
+        from x in q
+        where x.Name.Contains(searchTerm)
+        select x;
+      
+      if (isIdSearch)
+      {
+        q =
+          from x in q
+          where x.Id == id
+          select x;
+      }
+
+      var items = q.ToList();
+
+      var sql = q.ToSql();
+      
+      Console.WriteLine(sql);
+      
+      return items;
+    }
+
+    
     public Product GetProduct(int id)
     {
       return _db.Products.Find(id);
@@ -58,5 +90,7 @@ namespace aspnet_ef.services
     {
       return _db.Products.Where(x => x.Id == 1).Include(x => x.Prices).FirstOrDefault();
     }
+    
   }
+  
 }
